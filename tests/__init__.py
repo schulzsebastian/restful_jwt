@@ -10,9 +10,7 @@ sys.path.append(os.path.abspath('../'))
 # /tests/__init__.py
 
 from flask_testing import TestCase
-from api import create_app
-from .test_config import *
-
+from app import create_app
 
 class BaseTest(TestCase):
     
@@ -20,4 +18,4 @@ class BaseTest(TestCase):
         app = create_app('testing')
         return app
 
-    
+from .test_config import *

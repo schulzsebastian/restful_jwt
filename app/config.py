@@ -1,6 +1,6 @@
 # !usr/bin/python
 # -*- coding: utf-8 -*-
-# /api/config.py
+# /app/config.py
 
 class Config(object):
     DEBUG = False

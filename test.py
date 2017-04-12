@@ -8,10 +8,10 @@ import os
 
 COV = coverage.coverage(
     branch=True,
-    include='api/*',
+    include='app/*',
     omit=[
         'tests/*',
-        'api/config.py',
+        'app/config.py',
         'venv/*'
     ]
 )

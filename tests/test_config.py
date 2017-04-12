@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath('../'))
 
 import unittest
 from flask_testing import TestCase
-from api import create_app
+from app import create_app
 
 
 class TestDevelopmentConfig(TestCase):
