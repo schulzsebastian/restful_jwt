@@ -5,7 +5,7 @@
 from flask import Flask
 from .config import *
 #Blueprints
-from .api import api
+from .api import api, auth
 
 def create_app(config='development'):
     app = Flask(__name__)
@@ -15,5 +15,6 @@ def create_app(config='development'):
         app.config.from_object(TestingConfig)
     else:
         app.config.from_object(DevelopmentConfig)
+    app.register_blueprint(auth)
     app.register_blueprint(api)
     return app

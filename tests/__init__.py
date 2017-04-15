@@ -11,6 +11,7 @@ sys.path.append(os.path.abspath('../'))
 
 from flask_testing import TestCase
 from app import create_app
+from app.api import create_token, decode_token
 
 class BaseTest(TestCase):
     
@@ -18,4 +19,8 @@ class BaseTest(TestCase):
         app = create_app('testing')
         return app
 
-from .test_config import *
+    def create_token(self, data, seconds=60):
+        return create_token(data, seconds)
+
+    def decode_token(self, token):
+        return decode_token(token)

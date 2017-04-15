@@ -5,6 +5,7 @@
 class Config(object):
     DEBUG = False
     TESTING = False
+    SECRET_KEY = 'test'
 
 class DevelopmentConfig(Config):
     DEBUG = True
