@@ -17,12 +17,13 @@ def create_app(config='development'):
     else:
         app.config.from_object(DevelopmentConfig)
     #Database
-    db.init(app.config["DB_NAME"],
-        host=app.config["DB_HOST"],
-        user=app.config["DB_USER"],
-        password=app.config["DB_PASS"],
-        port=app.config["DB_PORT"])
-    db.create_tables([User], safe=True)
+    if config != 'testing':
+        db.init(app.config["DB_NAME"],
+            host=app.config["DB_HOST"],
+            user=app.config["DB_USER"],
+            password=app.config["DB_PASS"],
+            port=app.config["DB_PORT"])
+        db.create_tables([User], safe=True)
     #Blueprints
     app.register_blueprint(auth)
     app.register_blueprint(api)

@@ -4,6 +4,7 @@
 
 from peewee import Model, CharField, DateTimeField
 from playhouse.postgres_ext import PostgresqlExtDatabase
+from playhouse.hybrid import hybrid_property
 from flask import current_app
 from datetime import datetime
 from hashids import Hashids
@@ -15,19 +16,16 @@ class BaseClass(Model):
     class Meta:
         database = db
 
-    def hash_id(uid):
-        hashid_instance = Hashids(salt=current_app.config['SECRET_KEY'])
-        return hashid_instance.encode(uid)
-
-    def unhash_id(uid):
-        hashid_instance = Hashids(salt=current_app.config['SECRET_KEY'])
-        return hashid_instance.decode(uid)
-
 
 class User(BaseClass):
     username = CharField(unique=True)
     password = CharField()
     register_date = DateTimeField()
+
+    @hybrid_property
+    def hashed_id(self):
+        hashid_instance = Hashids(salt=current_app.config['SECRET_KEY'])
+        return hashid_instance.encode(self.id)
 
     def users_list():
         return [u.username for u in User.select()]
@@ -39,8 +37,11 @@ class User(BaseClass):
         return registered
 
     def check_password(payload):
-        user = User.get(User.username == payload['username'])
-        hashed = user.password.encode('utf-8')
-        if bcrypt.hashpw(payload['password'].encode('utf-8'), hashed) == hashed:
-            return user
+        try:
+            user = User.get(User.username == payload['username'])
+            hashed = user.password.encode('utf-8')
+            if bcrypt.hashpw(payload['password'].encode('utf-8'), hashed) == hashed:
+                return user
+        except User.DoesNotExist:
+            return False
         return False

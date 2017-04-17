@@ -12,13 +12,12 @@ import jwt
 @auth.route('/get_token', methods=['POST'])
 def get_token():
     payload = request.get_json(force=True)
-    if payload['username']:
+    if payload.get('username', None):
         payload['username'] = payload['username'].replace(' ', '')
-        if payload['password']:
+        if payload.get('password', None):
             logged = User.check_password(payload)
             if logged:
-                print(logged.id)
-                token = create_token()
+                token = create_token(logged)
                 return jsonify({'token': token})
             return jsonify({'message': 'invalid credentials'}), 403
         return jsonify({'message': 'password required'}), 400
@@ -38,8 +37,9 @@ def register():
         return jsonify({'message': 'user exists'}), 400
     return jsonify({'message': 'username required'}), 400
 
-def create_token(seconds=60):
+def create_token(user, seconds=60):
     payload = {
+        'uid': user.hashed_id,
         'iat': datetime.utcnow(),
         'exp': datetime.utcnow() + timedelta(seconds=seconds)
     }

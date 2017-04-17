@@ -7,7 +7,6 @@ sys.path.append(os.path.abspath('../'))
 
 import unittest
 from tests import BaseTest
-from time import sleep
 
 class TestRoutings(BaseTest):
 
@@ -32,26 +31,17 @@ class TestRoutings(BaseTest):
         self.assertIn('message', data)
         self.assertEqual(data['message'], 'Token is invalid')
         #Expired token
-        token = self.create_token(-1)
+        user = self.add_user('test', 'test')
+        token = self.create_token(user, -1)
         response = self.client.get('/status_auth?token={}'.format(token))
         self.assertEqual(response.status_code, 401)        
         data = response.json
         self.assertIn('message', data)
         self.assertEqual(data['message'], 'Token has expired')
         #Request with token
-        token = self.create_token()
+        token = self.create_token(user)
         response = self.client.get('/status_auth?token={}'.format(token))
         self.assertEqual(response.status_code, 200)        
         data = response.json
         self.assertIn('message', data)
         self.assertEqual(data['message'], 'auth')
-
-    def test_get_token(self):
-        response = self.client.get('/get_token')
-        self.assertEqual(response.status_code, 200)        
-        data = response.json
-        token = data['token']
-        #Test token
-        response = self.client.get('/status_auth?token={}'.format(token))
-        self.assertEqual(response.status_code, 200)
-
