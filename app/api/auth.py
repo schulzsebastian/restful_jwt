@@ -10,12 +10,11 @@ import jwt
 
 @auth.route('/get_token')
 def get_token():
-    token = create_token('test')
+    token = create_token()
     return jsonify({'token': token})
 
-def create_token(data, seconds=60):
+def create_token(seconds=60):
     payload = {
-        'data': data,
         'iat': datetime.utcnow(),
         'exp': datetime.utcnow() + timedelta(seconds=seconds)
     }

@@ -19,8 +19,8 @@ class BaseTest(TestCase):
         app = create_app('testing')
         return app
 
-    def create_token(self, data, seconds=60):
-        return create_token(data, seconds)
+    def create_token(self, seconds=60):
+        return create_token(seconds)
 
     def decode_token(self, token):
         return decode_token(token)

@@ -32,14 +32,14 @@ class TestRoutings(BaseTest):
         self.assertIn('message', data)
         self.assertEqual(data['message'], 'Token is invalid')
         #Expired token
-        token = self.create_token('test', -1)
+        token = self.create_token(-1)
         response = self.client.get('/status_auth?token={}'.format(token))
         self.assertEqual(response.status_code, 401)        
         data = response.json
         self.assertIn('message', data)
         self.assertEqual(data['message'], 'Token has expired')
         #Request with token
-        token = self.create_token('test')
+        token = self.create_token()
         response = self.client.get('/status_auth?token={}'.format(token))
         self.assertEqual(response.status_code, 200)        
         data = response.json
