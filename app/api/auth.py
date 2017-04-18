@@ -27,12 +27,12 @@ def get_token():
 @auth.route('/register', methods=['POST'])
 def register():
     payload = request.get_json(force=True)
-    if payload['username']:
+    if payload.get('username', None):
         payload['username'] = payload['username'].replace(' ', '')
         if payload['username'] not in User.users_list():
-            if payload['password']:
+            if payload.get('password', None):
                 User.add_user(payload)
-                return jsonify({'message': 'user {} registerd'.format(payload['username'])})
+                return jsonify({'message': 'user {} registered'.format(payload['username'])})
             return jsonify({'message': 'password required'}), 400
         return jsonify({'message': 'user exists'}), 400
     return jsonify({'message': 'username required'}), 400

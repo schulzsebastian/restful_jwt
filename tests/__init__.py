@@ -39,7 +39,7 @@ class BaseTest(TestCase):
 
     def post_json(self, url, payload):
         payload = json.dumps(payload)
-        return self.client.post('/get_token', data=payload, content_type='application/json')
+        return self.client.post(url, data=payload, content_type='application/json')
 
     def token_is_valid(self, token):
         try:

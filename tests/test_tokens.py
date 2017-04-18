@@ -22,6 +22,8 @@ class TestTokens(BaseTest):
         token_decoded = self.decode_token(token_encoded)
         self.assertIn('iat', token_decoded)
         self.assertIn('exp', token_decoded)
+        self.assertIn('uid', token_decoded)
+        self.assertEqual(user.hashed_id, token_decoded['uid'])
         #TODO: to_calendar
         #self.assertEqual(request_time, token_decoded['iat'])
         #self.assertEqual(expire_time, token_decoded['exp'])
@@ -33,5 +35,7 @@ class TestTokens(BaseTest):
         token_decoded = self.decode_token(token_encoded)
         self.assertIn('iat', token_decoded)
         self.assertIn('exp', token_decoded)
+        self.assertIn('uid', token_decoded)
         self.assertEqual(request_time, token_decoded['iat'])
         self.assertEqual(expire_time, token_decoded['exp'])
+        self.assertEqual(user.hashed_id, token_decoded['uid'])
